@@ -1,7 +1,7 @@
 use {crate::pdo::PowerDataObject, defmt::Format, heapless::Vec};
 
 /// Type of the user's callback function
-pub type CallbackFn = &'static Sync + dyn Fn(Event) -> Option<Response>;
+pub type CallbackFn = &'static (Sync + Fn(Event)) -> Option<Response>;
 
 /// Callback event types
 #[derive(Format)]
