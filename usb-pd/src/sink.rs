@@ -5,6 +5,7 @@ use crate::{
     pdo::FixedVariableRequestDataObject,
     Instant, PowerRole,
 };
+use defmt::debug;
 
 pub trait Driver {
     fn init(&mut self);
@@ -132,6 +133,9 @@ impl<DRIVER: Driver> Sink<DRIVER> {
             }
             Message::SourceCapabilities(caps) => {
                 self.notify(CallbackEvent::SourceCapabilitiesChanged(caps))
+            }
+            Message::VendorDefined(payload) => {
+                debug!("Vendor Defined Message! {:x}", payload);
             }
             Message::Unknown => unimplemented!(),
         }

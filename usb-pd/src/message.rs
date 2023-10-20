@@ -18,6 +18,7 @@ pub enum Message {
     Reject,
     Ready,
     SourceCapabilities(Vec<PowerDataObject, 8>),
+    VendorDefined(Vec<u8, 8>),
     Unknown,
 }
 
@@ -51,6 +52,25 @@ impl Message {
                     })
                     .collect(),
             ),
+            MessageType::Data(DataMessageType::VendorDefined) => {
+                let pkt: Vec<u8, 8> = Vec::new();
+                let foo = payload
+                    .chunks(1)
+                    .take(8)
+                    .map(|i| i[0])
+                    .collect::<Vec<u8, 8>>();
+
+                // pkt.clone_from_slice(
+                //     payload
+                //         .chunks_exact(1)
+                //         .take(8)
+                //         .collect()
+                //         .map(|i| i)
+                //         .collect(),
+                // );
+
+                Message::VendorDefined(foo)
+            }
             _ => {
                 warn!("unknown message type");
                 Message::Unknown
